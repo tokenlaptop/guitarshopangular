@@ -1,0 +1,111 @@
+<div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+  <h2>{{ isEditing ? 'Edit Guitar Listing' : 'Add New Guitar' }}</h2>
+
+  <form (ngSubmit)="onSubmit()" #guitarForm="ngForm" style="display: flex; flex-direction: column; gap: 12px;">
+    
+    <div>
+      <label>Brand: </label>
+      <select [(ngModel)]="selectedGuitar.brandId" name="brandId" required>
+        <option *ngFor="let b of brands" [value]="b.brandId">{{ b.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Body Type: </label>
+      <select [(ngModel)]="selectedGuitar.bodyTypeId" name="bodyTypeId" required>
+        <option *ngFor="let bt of bodyTypes" [value]="bt.bodyTypeId">{{ bt.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Model: </label>
+      <input type="text" [(ngModel)]="selectedGuitar.model" name="model" placeholder="e.g. Player Series" required />
+    </div>
+
+    <div>
+      <label>Year: </label>
+      <input type="number" [(ngModel)]="selectedGuitar.year" name="year" required />
+    </div>
+
+    <div>
+      <label>Price ($): </label>
+      <input type="number" step="0.01" [(ngModel)]="selectedGuitar.price" name="price" required />
+    </div>
+
+    <div>
+      <label>Size: </label>
+      <select [(ngModel)]="selectedGuitar.size" name="size" required>
+        <option *ngFor="let s of sizes" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Condition: </label>
+      <select [(ngModel)]="selectedGuitar.condition" name="condition" required>
+        <option *ngFor="let c of conditions" [value]="c">{{ c }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Status: </label>
+      <select [(ngModel)]="selectedGuitar.isSold" name="isSold">
+        <option [value]="0">Available</option>
+        <option [value]="1">Sold</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Description: </label>
+      <textarea [(ngModel)]="selectedGuitar.description" name="description" rows="3" style="width: 100%;"></textarea>
+    </div>
+
+    <div>
+      <button type="submit" [disabled]="!guitarForm.form.valid">
+        {{ isEditing ? 'Update Guitar' : 'Add Guitar' }}
+      </button>
+      <button type="button" *ngIf="isEditing" (click)="resetForm()" style="margin-left: 8px;">
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <hr style="margin: 30px 0;" />
+
+  <h2>Guitar Inventory</h2>
+
+  <p *ngIf="guitars.length === 0">No guitars available.</p>
+
+  <table *ngIf="guitars.length > 0" border="1" cellpadding="8" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Body Type</th>
+        <th>Year</th>
+        <th>Price</th>
+        <th>Condition</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let guitar of guitars">
+        <td>{{ getBrandName(guitar.brandId) }}</td>
+        <td>{{ guitar.model }}</td>
+        <td>{{ getBodyTypeName(guitar.bodyTypeId) }}</td>
+        <td>{{ guitar.year }}</td>
+        <td>${{ guitar.price }}</td>
+        <td>{{ guitar.condition }}</td>
+        <td>
+          <span [style.color]="guitar.isSold ? 'red' : 'green'">
+            {{ guitar.isSold ? 'Sold' : 'Available' }}
+          </span>
+        </td>
+        <td>
+          <button (click)="editGuitar(guitar)">Edit</button>
+          <button (click)="deleteGuitar(guitar.guitarId || guitar.id)" style="margin-left: 6px;">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

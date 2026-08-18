@@ -1,0 +1,19 @@
+<header class="navbar">
+  <div class="nav-container">
+    <div class="brand">
+      <span class="icon"></span>
+      <h1>Guitar Shop Admin</h1>
+    </div>
+    <nav class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inventory Manager</a>
+    </nav>
+  </div>
+</header>
+
+<main class="content-container">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2026 Guitar Shop Management System :D</p>
+</footer>
